@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: Larry123
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/thelibrary
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+server:
+  port: 8093
+  servlet:
+    context-path: /book/
