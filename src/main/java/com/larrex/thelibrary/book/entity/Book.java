@@ -19,8 +19,7 @@ public class Book {
 
     private String name;
     private String description;
-    @OneToOne
-    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "author_id",referencedColumnName = "id")
     private Author author;
     private String category;
@@ -31,7 +30,7 @@ public class Book {
     @CreationTimestamp
     private Date createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",updatable = false)
     @UpdateTimestamp
     private Date updatedAt;
 

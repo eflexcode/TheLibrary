@@ -10,8 +10,8 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: 8093
   servlet:
-    context-path: /book/
+    context-path: /the_library/

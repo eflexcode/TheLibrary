@@ -1,5 +1,6 @@
 package com.larrex.thelibrary.book.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,15 +21,15 @@ public class Author {
     private String name;
     private Integer age;
     private String description;
-
-    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Book> books;
 
     @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",updatable = false)
     @UpdateTimestamp
     private Date updatedAt;
 }
