@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("author/v1/")
+@RequestMapping("author/v1")
 @RequiredArgsConstructor
 public class AuthorController {
 
@@ -20,22 +22,22 @@ public class AuthorController {
         return authorService.createAuthor(authorModel);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public Author updateAuthor(@PathVariable(name = "id")Long id,@RequestBody AuthorModel authorModel) {
        return authorService.updateAuthor(authorModel, id);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Author getAuthorById(@PathVariable(name = "id") Long id) {
         return authorService.getAuthorById(id);
     }
 
     @GetMapping()
-    public Author getAuthorByName(@RequestParam(name = "name") String name) {
-        return authorService.getAuthorByName(name);
+    public List<Author> getAuthorByName(@RequestParam(name = "name") String name) {
+        return authorService.getAuthorsByName(name);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteAuthor(@PathVariable(name = "id")Long id) {
         authorService.deleteAuthor(id);
     }

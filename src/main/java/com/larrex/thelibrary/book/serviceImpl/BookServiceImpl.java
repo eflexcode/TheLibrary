@@ -32,6 +32,7 @@ public class BookServiceImpl implements BookService {
         Author author = authorService.getAuthorById(authorId);
         book.setAuthor(author);
         return bookRepository.save(book);
+
     }
 
     @Override

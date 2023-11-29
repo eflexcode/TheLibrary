@@ -14,15 +14,22 @@ import java.util.Date;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "text")
     private String name;
+
+    @Column(columnDefinition = "text")
     private String description;
+
     @ManyToOne
     @JoinColumn(name = "author_id",referencedColumnName = "id")
     private Author author;
+
+    @Column(columnDefinition = "text")
     private String category;
+
     @Column(name = "release_date")
     private Date releaseDate;
 

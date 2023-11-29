@@ -15,7 +15,14 @@ public class BookController {
 
     @PostMapping("/add")
     public Book addBook(@RequestParam(name = "author_id") Long authorId, @RequestBody BookModel bookModel) {
+        System.out.println("dddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaa");
         return bookService.addBook(bookModel,authorId);
     }
+//
+//    @PostMapping("/add")
+//    public Book addBook() {
+//        System.out.println("dddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaa");
+//        return new Book();
+//    }
 
 }

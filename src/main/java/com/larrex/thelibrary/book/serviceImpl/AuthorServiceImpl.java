@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
@@ -42,8 +44,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getAuthorByName(String name) {
-        return authorRepository.findByName(name).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"No author found"));
+    public List<Author> getAuthorsByName(String name) {
+        return authorRepository.findByNameContainingIgnoreCase(name);//.orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"No author found"));
     }
 
     @Override
