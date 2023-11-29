@@ -4,10 +4,7 @@ import com.larrex.thelibrary.book.entity.Book;
 import com.larrex.thelibrary.book.entity.model.BookModel;
 import com.larrex.thelibrary.book.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("book/v1")
@@ -17,8 +14,8 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/add")
-    public Book addBook(@RequestBody BookModel bookModel) {
-        return bookService.addBook(bookModel);
+    public Book addBook(@RequestParam(name = "author_id") Long authorId, @RequestBody BookModel bookModel) {
+        return bookService.addBook(bookModel,authorId);
     }
 
 }

@@ -32,7 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
         author.setName(authorModel.getName() != null ? authorModel.getName() : author.getName());
         author.setAge(authorModel.getAge() != null ? authorModel.getAge() : author.getAge());
         author.setDescription(authorModel.getDescription() != null ? authorModel.getDescription() : author.getDescription());
-
+        System.out.println("fffffffffffffffffffff"+authorModel);
         return authorRepository.save(author);
     }
 
