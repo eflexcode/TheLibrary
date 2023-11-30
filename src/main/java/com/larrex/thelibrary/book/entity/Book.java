@@ -23,9 +23,8 @@ public class Book {
     @Column(columnDefinition = "text")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id",referencedColumnName = "id")
-    private Author author;
+    @Column(name = "author_id")
+    private Long authorId;
 
     @Column(columnDefinition = "text")
     private String category;

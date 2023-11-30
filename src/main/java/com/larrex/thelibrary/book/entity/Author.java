@@ -26,9 +26,9 @@ public class Author {
     @Column(columnDefinition="text")
     private String description;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private List<Book> books;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+//    private List<Book> books;
 
     @Column(name = "created_at")
     @CreationTimestamp

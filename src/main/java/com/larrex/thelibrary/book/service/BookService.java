@@ -2,6 +2,8 @@ package com.larrex.thelibrary.book.service;
 
 import com.larrex.thelibrary.book.entity.Book;
 import com.larrex.thelibrary.book.entity.model.BookModel;
+import com.larrex.thelibrary.book.entity.model.BookWrapper;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,12 +13,12 @@ public interface BookService {
 
     Book updateBook(BookModel bookModel,Long id);
 
-    Book getBookById(Long id);
+    BookWrapper getBookById(Long id);
 
-    List<Book> getBookByName(String name);
+    List<BookWrapper> getBooksByName(String name,Pageable pageable);
 
-    List<Book> getBooksByAuthor(Long authorId);
+    List<BookWrapper> getBooksByAuthor(Long authorId,Pageable pageable);
 
-    List<Book> getByCategory(String category);
+    List<BookWrapper> getByCategory(String category, Pageable pageable);
 
 }
