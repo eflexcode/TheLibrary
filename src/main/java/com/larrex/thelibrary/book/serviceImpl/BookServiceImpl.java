@@ -103,6 +103,9 @@ public class BookServiceImpl implements BookService {
 
             Author author = authorService.getAuthorById(newBook.getAuthorId());
             bookWrapper.setAuthor(author);
+            Category category = categoryService.getCategory(newBook.getCategoryId());
+
+            bookWrapper.setCategory(category.getCategoryName());
             bookWrappers.add(bookWrapper);
         }
 
@@ -110,9 +113,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookWrapper> getByCategory(String category,Pageable pageable) {
+    public List<BookWrapper> getByCategory(Long category,Pageable pageable) {
 
-        Page<Book> book = bookRepository.findByCategoryContainingIgnoreCase(category,pageable);
+        Page<Book> book = bookRepository.findByCategoryId(category,pageable);
 
         List<BookWrapper> bookWrappers = new ArrayList<>();
 
@@ -123,6 +126,9 @@ public class BookServiceImpl implements BookService {
 
             Author author = authorService.getAuthorById(newBook.getAuthorId());
             bookWrapper.setAuthor(author);
+            Category categoryObj = categoryService.getCategory(newBook.getCategoryId());
+
+            bookWrapper.setCategory(categoryObj.getCategoryName());
             bookWrappers.add(bookWrapper);
         }
 

@@ -34,7 +34,7 @@ public class BookController {
 
     //please on query at a time
     @GetMapping("/query")
-    public List<BookWrapper> getBooksByName(@RequestParam(name = "name",required = false) String name, @RequestParam(name = "category",required = false) String category, @RequestParam(name = "author_id",required = false) Long id, Pageable pageable) {
+    public List<BookWrapper> getBooksByName(@RequestParam(name = "name",required = false) String name, @RequestParam(name = "category",required = false) Long category, @RequestParam(name = "author_id",required = false) Long id, Pageable pageable) {
 
         if (name != null) {
             return bookService.getBooksByName(name, pageable);

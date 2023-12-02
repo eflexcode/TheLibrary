@@ -19,6 +19,6 @@ public interface BookService {
 
     List<BookWrapper> getBooksByAuthor(Long authorId,Pageable pageable);
 
-    List<BookWrapper> getByCategory(String category, Pageable pageable);
+    List<BookWrapper> getByCategory(Long category, Pageable pageable);
 
 }
