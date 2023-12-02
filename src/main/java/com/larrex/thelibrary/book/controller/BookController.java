@@ -19,22 +19,41 @@ public class BookController {
 
     @PostMapping("/add")
     public Book addBook(@RequestParam(name = "author_id") Long authorId, @RequestBody BookModel bookModel) {
-        return bookService.addBook(bookModel,authorId);
+        return bookService.addBook(bookModel, authorId);
     }
 
     @GetMapping("{id}")
-    public BookWrapper getBookById(@PathVariable Long id){
+    public BookWrapper getBookById(@PathVariable Long id) {
         return bookService.getBookById(id);
     }
 
     @PutMapping("{id}")
-    public Book updateBook(@PathVariable Long id,@RequestBody BookModel bookModel){
-        return bookService.updateBook(bookModel,id);
+    public Book updateBook(@PathVariable Long id, @RequestBody BookModel bookModel) {
+        return bookService.updateBook(bookModel, id);
     }
 
-    @GetMapping()
-   public List<BookWrapper> getBooksByName(@RequestParam(name = "name") String name, Pageable pageable) {
-     return bookService.getBooksByName(name, pageable);
+    //please on query at a time
+    @GetMapping("/query")
+    public List<BookWrapper> getBooksByName(@RequestParam(name = "name",required = false) String name, @RequestParam(name = "category",required = false) String category, @RequestParam(name = "author_id",required = false) Long id, Pageable pageable) {
+
+        if (name != null) {
+            return bookService.getBooksByName(name, pageable);
+        }else if (category != null){
+            return bookService.getByCategory(category, pageable);
+        }else {
+           return bookService.getBooksByAuthor(id, pageable);
+        }
     }
+
+//    @GetMapping()
+//    public List<BookWrapper> getBooksByCategory(@RequestParam(name = "category") String category, Pageable pageable){
+//        return bookService.getByCategory(category, pageable);
+//    }
+//
+//    @GetMapping("/")
+//    public List<BookWrapper> getBooksByAuthor(@RequestParam(name = "author_id") Long id, Pageable pageable){
+//        return bookService.getBooksByAuthor(id, pageable);
+//    }
+//
 
 }

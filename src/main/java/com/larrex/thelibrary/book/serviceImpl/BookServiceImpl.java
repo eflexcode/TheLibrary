@@ -2,12 +2,14 @@ package com.larrex.thelibrary.book.serviceImpl;
 
 import com.larrex.thelibrary.book.entity.Author;
 import com.larrex.thelibrary.book.entity.Book;
+import com.larrex.thelibrary.book.entity.Category;
 import com.larrex.thelibrary.book.entity.model.BookModel;
 import com.larrex.thelibrary.book.entity.model.BookWrapper;
 import com.larrex.thelibrary.book.repository.AuthorRepository;
 import com.larrex.thelibrary.book.repository.BookRepository;
 import com.larrex.thelibrary.book.service.AuthorService;
 import com.larrex.thelibrary.book.service.BookService;
+import com.larrex.thelibrary.book.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.ASTNode;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +29,7 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final AuthorService authorService;
+    private final CategoryService categoryService;
 
     @Override
     public Book addBook(BookModel bookModel, Long authorId) {
@@ -34,6 +37,7 @@ public class BookServiceImpl implements BookService {
         Book book = new Book();
         BeanUtils.copyProperties(bookModel, book);
         Author author = authorService.getAuthorById(authorId);
+        Category category = categoryService.getCategory(bookModel.getCategoryId());
         book.setAuthorId(authorId);
         return bookRepository.save(book);
 
@@ -44,7 +48,7 @@ public class BookServiceImpl implements BookService {
 
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
         book.setName(bookModel.getName() != null ? bookModel.getName() : book.getName());
-        book.setCategory(bookModel.getCategory() != null ? bookModel.getCategory(): book.getCategory());
+        book.setCategoryId(bookModel.getCategoryId() != null ? bookModel.getCategoryId(): book.getCategoryId());
         book.setDescription(bookModel.getDescription() != null ? bookModel.getDescription(): book.getDescription());
         book.setReleaseDate(bookModel.getReleaseDate() != null ? bookModel.getReleaseDate(): book.getReleaseDate());
         return bookRepository.save(book);
@@ -55,9 +59,11 @@ public class BookServiceImpl implements BookService {
 
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
         Author author = authorService.getAuthorById(book.getAuthorId());
+        Category category = categoryService.getCategory(book.getCategoryId());
         BookWrapper bookWrapper = new BookWrapper();
         BeanUtils.copyProperties(book, bookWrapper);
         bookWrapper.setAuthor(author);
+        bookWrapper.setCategory(category.getCategoryName());
         return bookWrapper;
     }
 
@@ -74,6 +80,9 @@ public class BookServiceImpl implements BookService {
 
             Author author = authorService.getAuthorById(newBook.getAuthorId());
             bookWrapper.setAuthor(author);
+            Category category = categoryService.getCategory(newBook.getCategoryId());
+
+            bookWrapper.setCategory(category.getCategoryName());
             bookWrappers.add(bookWrapper);
         }
 

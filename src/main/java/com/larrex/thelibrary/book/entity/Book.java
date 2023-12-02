@@ -26,8 +26,7 @@ public class Book {
     @Column(name = "author_id")
     private Long authorId;
 
-    @Column(columnDefinition = "text")
-    private String category;
+    private Long categoryId;
 
     @Column(name = "release_date")
     private Date releaseDate;
