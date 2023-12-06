@@ -9,13 +9,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class LiberianServiceImpl implements LiberianService {
 
     private final LiberianRepository liberianRepository;
+
+    private final String uploadUniversalPath = "C:/Users/E.F.Lhomes/Desktop/spring uploads";
 
     @Override
     public Liberian createLiberian(LiberianModel liberianModel) {
@@ -42,6 +49,24 @@ public class LiberianServiceImpl implements LiberianService {
     @Override
     public Liberian getLiberianById(Long id) {
         return liberianRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,""));
+    }
+
+    @Override
+    public Liberian uploadImage(MultipartFile multipartFile, Long id) throws IOException {
+
+        String downloadUrl = uploadUniversalPath+multipartFile.getOriginalFilename();
+
+        File file = new File(downloadUrl);
+        file.createNewFile();
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(multipartFile.getBytes());
+        fileOutputStream.close();
+
+        LiberianModel liberianModel = new LiberianModel();
+        liberianModel.setImageUrl(downloadUrl);
+
+
+        return updateLiberian(liberianModel,id);
     }
 
     @Override

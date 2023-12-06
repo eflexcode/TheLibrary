@@ -4,6 +4,9 @@ spring:
     password: Larry123
     username: postgres
     url: jdbc:postgresql://localhost:5432/thelibrary
+  servlet:
+    multipart:
+      enabled: true
 
   jpa:
     hibernate:
