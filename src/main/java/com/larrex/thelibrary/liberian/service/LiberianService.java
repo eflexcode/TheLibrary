@@ -16,6 +16,8 @@ public interface LiberianService {
         Liberian getLiberianById(Long id);
 
         Liberian uploadImage(MultipartFile multipartFile,Long id) throws IOException;
+
+        byte[] downloadImage(String filename);
         void delete(Long id);
 
 }
