@@ -31,11 +31,11 @@ public class Book {
     @Column(name = "release_date")
     private Date releaseDate;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at",updatable = false)
     @CreationTimestamp
     private Date createdAt;
 
-    @Column(name = "updated_at",updatable = false)
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
 

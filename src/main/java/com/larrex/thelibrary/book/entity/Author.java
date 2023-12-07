@@ -30,11 +30,11 @@ public class Author {
 //    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
 //    private List<Book> books;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at",updatable = false)
     @CreationTimestamp
     private Date createdAt;
 
-    @Column(name = "updated_at",updatable = false)
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
 }
