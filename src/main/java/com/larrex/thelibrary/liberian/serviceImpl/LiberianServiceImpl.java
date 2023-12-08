@@ -1,5 +1,6 @@
 package com.larrex.thelibrary.liberian.serviceImpl;
 
+import com.larrex.thelibrary.Util;
 import com.larrex.thelibrary.book.entity.Book;
 import com.larrex.thelibrary.liberian.entity.Liberian;
 import com.larrex.thelibrary.liberian.entity.model.LiberianModel;
@@ -23,8 +24,6 @@ public class LiberianServiceImpl implements LiberianService {
 
     private final LiberianRepository liberianRepository;
 
-    private final String uploadUniversalPath = "C:/Users/E.F.Lhomes/Desktop/springuploads/";
-    private final String downloadUniversalPath = "http://localhost:8093/the_library/liberian/v1/profile/";
 
     @Override
     public Liberian createLiberian(LiberianModel liberianModel) {
@@ -58,15 +57,16 @@ public class LiberianServiceImpl implements LiberianService {
 
         String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
 //        String downloadUrl = uploadUniversalPath+"/";
+        Util.crateFile(multipartFile);
 
-        File file = new File(uploadUniversalPath,imageName);
-//        file.createNewFile();
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        fileOutputStream.write(multipartFile.getBytes());
-        fileOutputStream.close();
+//        File file = new File(Util.uploadUniversalPath,imageName);
+////        file.createNewFile();
+//        FileOutputStream fileOutputStream = new FileOutputStream(file);
+//        fileOutputStream.write(multipartFile.getBytes());
+//        fileOutputStream.close();
 
         LiberianModel liberianModel = new LiberianModel();
-        liberianModel.setImageUrl(downloadUniversalPath+imageName);
+        liberianModel.setImageUrl(Util.downloadUniversalPath+imageName);
 
 
         return updateLiberian(liberianModel,id);
@@ -75,15 +75,17 @@ public class LiberianServiceImpl implements LiberianService {
     @Override
     public byte[] downloadImage(String filename) {
 
-        String filepath = uploadUniversalPath+filename;
-        byte[] imageByte;
-        try {
-         imageByte = Files.readAllBytes(new File(filepath).toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        String filepath = Util.uploadUniversalPath+filename;
+//        byte[] imageByte;
+//        try {
+//         imageByte = Files.readAllBytes(new File(filepath).toPath());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return imageByte;
 
-        return imageByte;
+        return Util.downloadImage(filename);
     }
 
     @Override
