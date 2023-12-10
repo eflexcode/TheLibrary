@@ -10,8 +10,9 @@ import java.nio.file.Files;
 public class Util {
     public static final String uploadUniversalPath = "C:/Users/E.F.Lhomes/Desktop/springuploads/";
     public static final String downloadUniversalPath = "http://localhost:8093/the_library/liberian/v1/profile/";
+    public static final String downloadUniversalPath2 = "http://localhost:8093/the_library/";
 
-    public static void crateFile(MultipartFile multipartFile) throws IOException {
+    public static String createFile(MultipartFile multipartFile) throws IOException {
         String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
 //        String downloadUrl = uploadUniversalPath+"/";
 
@@ -20,7 +21,7 @@ public class Util {
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         fileOutputStream.write(multipartFile.getBytes());
         fileOutputStream.close();
-
+return imageName;
     }
 
     public static byte[] downloadImage(String filename) {

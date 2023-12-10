@@ -29,7 +29,7 @@ public class LoanController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public Loan createLoan(@RequestParam(name = "image") MultipartFile multipartFile, @RequestBody LoanModel loanModel) {
+    public Loan createLoan(@RequestPart(name = "image") MultipartFile multipartFile, @RequestPart(name = "body") LoanModel loanModel) {
         return loanService.createLoan(loanModel, multipartFile);
     }
 

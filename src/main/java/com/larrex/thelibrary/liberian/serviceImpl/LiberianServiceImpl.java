@@ -1,7 +1,6 @@
 package com.larrex.thelibrary.liberian.serviceImpl;
 
 import com.larrex.thelibrary.Util;
-import com.larrex.thelibrary.book.entity.Book;
 import com.larrex.thelibrary.liberian.entity.Liberian;
 import com.larrex.thelibrary.liberian.entity.model.LiberianModel;
 import com.larrex.thelibrary.liberian.repository.LiberianRepository;
@@ -13,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 
 @Service
 @RequiredArgsConstructor
@@ -55,9 +51,9 @@ public class LiberianServiceImpl implements LiberianService {
     @Override
     public Liberian uploadImage(MultipartFile multipartFile, Long id) throws IOException {
 
-        String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
+//        String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
 //        String downloadUrl = uploadUniversalPath+"/";
-        Util.crateFile(multipartFile);
+        String imageName =  Util.createFile(multipartFile);
 
 //        File file = new File(Util.uploadUniversalPath,imageName);
 ////        file.createNewFile();

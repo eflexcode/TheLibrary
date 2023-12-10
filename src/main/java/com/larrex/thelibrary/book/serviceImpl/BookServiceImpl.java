@@ -48,6 +48,8 @@ public class BookServiceImpl implements BookService {
 
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
         book.setName(bookModel.getName() != null ? bookModel.getName() : book.getName());
+        Category category = categoryService.getCategory(bookModel.getCategoryId());
+
         book.setCategoryId(bookModel.getCategoryId() != null ? bookModel.getCategoryId(): book.getCategoryId());
         book.setDescription(bookModel.getDescription() != null ? bookModel.getDescription(): book.getDescription());
         book.setReleaseDate(bookModel.getReleaseDate() != null ? bookModel.getReleaseDate(): book.getReleaseDate());

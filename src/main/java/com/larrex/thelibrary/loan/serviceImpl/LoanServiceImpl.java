@@ -1,15 +1,9 @@
 package com.larrex.thelibrary.loan.serviceImpl;
 
 import com.larrex.thelibrary.Util;
-import com.larrex.thelibrary.book.entity.Book;
 import com.larrex.thelibrary.book.entity.model.BookWrapper;
-import com.larrex.thelibrary.book.repository.BookRepository;
-import com.larrex.thelibrary.book.service.AuthorService;
 import com.larrex.thelibrary.book.service.BookService;
-import com.larrex.thelibrary.book.service.CategoryService;
 import com.larrex.thelibrary.liberian.entity.Liberian;
-import com.larrex.thelibrary.liberian.entity.model.LiberianModel;
-import com.larrex.thelibrary.liberian.repository.LiberianRepository;
 import com.larrex.thelibrary.liberian.service.LiberianService;
 import com.larrex.thelibrary.loan.entity.Loan;
 import com.larrex.thelibrary.loan.entity.model.LoanModel;
@@ -22,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 
 @Service
 @RequiredArgsConstructor
@@ -35,24 +26,23 @@ public class LoanServiceImpl implements LoanService {
     private final LoanRepository loanRepository;
     private final LiberianService liberianService;
 
-
     @Override
     public Loan createLoan(LoanModel loanModel,MultipartFile multipartFile) {
 
         BookWrapper book = bookService.getBookById(loanModel.getBookId());
         Liberian liberian = liberianService.getLiberianById(loanModel.getLiberianId());
-        String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
-
+//        String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
 
         Loan loan = new Loan();
         BeanUtils.copyProperties(loanModel, loan);
 
         try {
-            Util.crateFile(multipartFile);
-            loan.setStudentImage(imageName);
+            String imageName =  Util.createFile(multipartFile);
+            loan.setStudentImage(Util.downloadUniversalPath2+"loan/v1/profile/"+imageName);
         } catch (IOException e) {
 
         }
+
         return loanRepository.save(loan);
     }
 
@@ -82,7 +72,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public Loan uploadImage(MultipartFile multipartFile, Long id) throws IOException {
 
-        String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
+//        String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
 ////        String downloadUrl = uploadUniversalPath+"/";
 //
 //        File file = new File(Util.uploadUniversalPath,imageName);
@@ -91,7 +81,7 @@ public class LoanServiceImpl implements LoanService {
 //        fileOutputStream.write(multipartFile.getBytes());
 //        fileOutputStream.close();
 
-        Util.crateFile(multipartFile);
+        String imageName = Util.createFile(multipartFile);
         LoanModel loan = new LoanModel();
         loan.setStudentImage(Util.downloadUniversalPath+imageName);
 

@@ -7,7 +7,6 @@ import lombok.Data;
 public class LoanModel {
 
     private Long liberianId;
-
     private Long bookId;
     private String studentName;
     private String studentAddress;
