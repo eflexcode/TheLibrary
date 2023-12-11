@@ -1,6 +1,12 @@
 package com.larrex.thelibrary.auth.controller;
 
+import com.larrex.thelibrary.auth.entity.model.StatusMessage;
+import com.larrex.thelibrary.auth.entity.model.TokenResponse;
+import com.larrex.thelibrary.auth.service.AuthService;
+import com.larrex.thelibrary.liberian.entity.Liberian;
+import com.larrex.thelibrary.auth.entity.model.Login;
 import com.larrex.thelibrary.liberian.entity.model.LiberianModel;
+import com.larrex.thelibrary.liberian.service.LiberianService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,34 +23,31 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
+    private final LiberianService liberianService;
+    private final AuthService authService;
+
     @PostMapping("register")
-    public ResponseEntity<String> registerUser(@RequestBody LiberianModel liberianModel){
-
-        return new ResponseEntity<String>(authService.registerUser(userWrapper), HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Liberian registerUser(@RequestBody LiberianModel liberianModel){
+        return liberianService.createLiberian(liberianModel);
     }
 
-    @PostMapping("verifyToken")
-    public ResponseEntity<String> verifyToken(@RequestParam(name = "token") String token){
-
-        return new ResponseEntity<String>(authService.verifyToken(token),HttpStatus.OK);
-
+    @PostMapping("verify_token")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public StatusMessage verifyToken(@RequestParam(name = "token") String token){
+        return authService.verifyToken(token);
     }
 
-    @PostMapping("expiredToken")
-    public ResponseEntity<String> expiredToken(@RequestParam(name = "old_token") String token){
-        return new ResponseEntity<String>(authService.expiredToken(token),HttpStatus.OK);
+    @PostMapping("expired_token")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public StatusMessage expiredToken(@RequestParam(name = "old_token") String token){
+        return authService.expiredToken(token);
     }
 
     @PostMapping("login")
-    public ResponseEntity<JwtResponse> login(@RequestBody Login login) throws DisabledException, BadCredentialsException {
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public TokenResponse login(@RequestBody Login login) throws DisabledException, BadCredentialsException {
 
-        Authentication authentication =
-                authenticationManager
-                        .authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(),login.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        final UserDetails userDetails = userService.userDetailService().loadUserByUsername(login.getEmail());
-        return new ResponseEntity<JwtResponse>(new JwtResponse(jwtUtils.generateToken(userDetails)),HttpStatus.OK);
+        return authService.login(login);
     }
-
 }
