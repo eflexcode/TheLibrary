@@ -23,28 +23,28 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final LiberianService liberianService;
+
     private final AuthService authService;
 
-    @PostMapping("register")
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Liberian registerUser(@RequestBody LiberianModel liberianModel){
-        return liberianService.createLiberian(liberianModel);
+        return authService.createLiberian(liberianModel);
     }
 
-    @PostMapping("verify_token")
+    @PostMapping("/verify_token")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public StatusMessage verifyToken(@RequestParam(name = "token") String token){
         return authService.verifyToken(token);
     }
 
-    @PostMapping("expired_token")
+    @PostMapping("/expired_token")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public StatusMessage expiredToken(@RequestParam(name = "old_token") String token){
         return authService.expiredToken(token);
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public TokenResponse login(@RequestBody Login login) throws DisabledException, BadCredentialsException {
 
