@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableWebSecurity
 public class SecurityConfig {
+
     String[] openUrls = {"/auth/v1/register","/auth/v1/verify_token","/auth/v1/expired_Token","/auth/v1/login"};
 //    String[] openUrls = {"/auth/v1/**"};
 
@@ -21,13 +22,9 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(openUrls).permitAll().anyRequest().permitAll())
-
-
-        ;
+                .authorizeHttpRequests(auth -> auth.requestMatchers(openUrls).permitAll().anyRequest().authenticated());
 
         return httpSecurity.build();
     }
-
 
 }

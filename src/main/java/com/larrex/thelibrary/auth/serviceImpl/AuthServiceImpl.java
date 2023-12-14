@@ -8,11 +8,13 @@ import com.larrex.thelibrary.auth.entity.model.TokenResponse;
 import com.larrex.thelibrary.auth.entity.model.VerificationTokenModel;
 import com.larrex.thelibrary.auth.service.AuthService;
 import com.larrex.thelibrary.auth.service.VerificationService;
+import com.larrex.thelibrary.auth.util.JwtUtil;
 import com.larrex.thelibrary.book.service.AuthorService;
 import com.larrex.thelibrary.liberian.entity.Liberian;
 import com.larrex.thelibrary.liberian.entity.model.LiberianModel;
 import com.larrex.thelibrary.liberian.service.LiberianService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +26,8 @@ public class AuthServiceImpl implements AuthService {
 
     private final LiberianService liberianService;
     private final VerificationService verificationService;
+    private final CustomUserServiceImpl customUserService;
+    private final JwtUtil jwtUtil;
 
     @Override
     public Liberian createLiberian(LiberianModel liberianModel) {
@@ -62,6 +66,8 @@ public class AuthServiceImpl implements AuthService {
         VerificationToken verificationToken = verificationService.getByToken(token);
         VerificationTokenModel verificationTokenModel = new VerificationTokenModel();
         verificationTokenModel.setToken(UUID.randomUUID().toString());
+        verificationTokenModel.setExp_date(new Date(System.currentTimeMillis()+ Util.exp_time));
+
         verificationService.updateToken(verificationTokenModel, verificationToken.getId());
 
         return new StatusMessage("New Verification sent to: "+verificationToken.getEmail());
@@ -69,7 +75,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse login(Login login) {
-        return null;
+
+        final UserDetails userDetails = customUserService.loadUserByUsername(login.getEmail());
+
+        return new TokenResponse(jwtUtil.generateJWT(userDetails));
     }
 
 }
