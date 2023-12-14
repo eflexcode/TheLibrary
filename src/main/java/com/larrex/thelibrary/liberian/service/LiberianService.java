@@ -14,6 +14,7 @@ public interface LiberianService {
         Liberian createLiberian(LiberianModel liberianModel);
         Liberian updateLiberian(LiberianModel liberianModel,Long id);
         Liberian getLiberianById(Long id);
+        Liberian getLiberianByEmail(String email);
 
         Liberian uploadImage(MultipartFile multipartFile,Long id) throws IOException;
 

@@ -18,7 +18,8 @@ public class Liberian {
     private String fullName;
     private String email;
     private String password;
-    private String imageUrl;
+    private String imageUrl ="";
+    private Boolean enabled = false;
     @Column(name = "created_at",updatable = false)
     @CreationTimestamp
     private Date createdAt;
@@ -26,6 +27,5 @@ public class Liberian {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
 
 }

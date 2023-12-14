@@ -9,4 +9,5 @@ public class LiberianModel {
     private String email;
     private String password;
     private String imageUrl;
+    private Boolean enabled;
 }

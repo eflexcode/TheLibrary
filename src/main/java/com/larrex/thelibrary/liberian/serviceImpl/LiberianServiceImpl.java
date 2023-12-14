@@ -20,12 +20,13 @@ public class LiberianServiceImpl implements LiberianService {
 
     private final LiberianRepository liberianRepository;
 
-
     @Override
     public Liberian createLiberian(LiberianModel liberianModel) {
 
         Liberian liberian = new Liberian();
         BeanUtils.copyProperties(liberianModel,liberian);
+        liberian.setEnabled(false);
+        liberian.setImageUrl("");
 
         return liberianRepository.save(liberian);
     }
@@ -38,6 +39,7 @@ public class LiberianServiceImpl implements LiberianService {
         liberian.setPassword(liberianModel.getPassword() != null ? liberianModel.getPassword() : liberian.getPassword());
         liberian.setFullName(liberianModel.getFullName() != null ? liberianModel.getFullName() : liberian.getFullName());
         liberian.setImageUrl(liberianModel.getImageUrl() != null ? liberianModel.getImageUrl() : liberian.getImageUrl());
+        liberian.setEnabled(liberianModel.getEnabled() != null ? liberianModel.getEnabled() : liberian.getEnabled());
 
 
         return liberianRepository.save(liberian);
@@ -46,6 +48,11 @@ public class LiberianServiceImpl implements LiberianService {
     @Override
     public Liberian getLiberianById(Long id) {
         return liberianRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,""));
+    }
+
+    @Override
+    public Liberian getLiberianByEmail(String email) {
+        return liberianRepository.findByEmail(email).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,""));
     }
 
     @Override
