@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,12 @@ public class LiberianServiceImpl implements LiberianService {
 
     @Override
     public Liberian createLiberian(LiberianModel liberianModel) {
+
+
+
+        if (isUserNew(liberianModel.getEmail())){
+           throw  new ResponseStatusException(HttpStatus.IM_USED, "email already exist");
+        }
 
         Liberian liberian = new Liberian();
         BeanUtils.copyProperties(liberianModel,liberian);
@@ -58,43 +65,28 @@ public class LiberianServiceImpl implements LiberianService {
     @Override
     public Liberian uploadImage(MultipartFile multipartFile, Long id) throws IOException {
 
-//        String imageName = String.valueOf(System.currentTimeMillis()+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".")));
-//        String downloadUrl = uploadUniversalPath+"/";
         String imageName =  Util.createFile(multipartFile);
-
-//        File file = new File(Util.uploadUniversalPath,imageName);
-////        file.createNewFile();
-//        FileOutputStream fileOutputStream = new FileOutputStream(file);
-//        fileOutputStream.write(multipartFile.getBytes());
-//        fileOutputStream.close();
 
         LiberianModel liberianModel = new LiberianModel();
         liberianModel.setImageUrl(Util.downloadUniversalPath+imageName);
-
 
         return updateLiberian(liberianModel,id);
     }
 
     @Override
     public byte[] downloadImage(String filename) {
-
-//        String filepath = Util.uploadUniversalPath+filename;
-//        byte[] imageByte;
-//        try {
-//         imageByte = Files.readAllBytes(new File(filepath).toPath());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return imageByte;
-
         return Util.downloadImage(filename);
     }
 
     @Override
     public void delete(Long id) {
-
         liberianRepository.deleteById(id);
+    }
 
+    private Boolean isUserNew(String email){
+
+        Optional<Liberian> liberian =  liberianRepository.findByEmail(email);
+
+        return liberian.isPresent();
     }
 }

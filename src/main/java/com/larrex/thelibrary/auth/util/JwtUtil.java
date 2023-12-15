@@ -1,6 +1,7 @@
 package com.larrex.thelibrary.auth.util;
 
 import com.larrex.thelibrary.Util;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -12,6 +13,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
@@ -35,6 +37,34 @@ public class JwtUtil {
     private Key signKey(String secretPhrase){
         byte[] bytes = secretPhrase.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(bytes);
+    }
+
+    private <T> T getClaimsFromToken(String token, Function<Claims,T> function){
+
+        final Claims claims = Jwts.parserBuilder().
+                setSigningKey(signKey(keyword)).build().parseClaimsJws(token).getBody();
+
+        return function.apply(claims);
+    }
+
+    public String getUsernameFromToken(String token){
+        return getClaimsFromToken(token,Claims::getSubject);
+    }
+
+    public Date getExpDateFromToken(String token){
+        return getClaimsFromToken(token,Claims::getExpiration);
+    }
+
+    private boolean isTokenExpired(String token){
+        final Date exp_date = getExpDateFromToken(token);
+        return exp_date.before(new Date());
+    }
+
+    public boolean validateToken(String token,String sentUsername){
+
+        String tokenUsername = getUsernameFromToken(token);
+        return tokenUsername.equals(sentUsername) && !isTokenExpired(token);
+
     }
 
 }
