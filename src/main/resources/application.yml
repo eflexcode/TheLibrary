@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-circular-references: true
   datasource:
     driver-class-name: org.postgresql.Driver
     password: Larry123

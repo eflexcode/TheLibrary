@@ -47,7 +47,6 @@ public class AuthController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public TokenResponse login(@RequestBody Login login) throws DisabledException, BadCredentialsException {
-
         return authService.login(login);
     }
 }

@@ -1,6 +1,7 @@
 package com.larrex.thelibrary.liberian.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.larrex.thelibrary.liberian.entity.model.Role;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class Liberian implements UserDetails {
     private String fullName;
     @Column(name = "email", unique = true)
     private String email;
+    @JsonIgnore
     private String password;
     private String imageUrl = "";
     private Boolean enabled = false;

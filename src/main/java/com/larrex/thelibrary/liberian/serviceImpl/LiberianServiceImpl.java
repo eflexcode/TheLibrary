@@ -8,6 +8,7 @@ import com.larrex.thelibrary.liberian.service.LiberianService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class LiberianServiceImpl implements LiberianService {
 
     private final LiberianRepository liberianRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Liberian createLiberian(LiberianModel liberianModel) {
@@ -34,6 +36,7 @@ public class LiberianServiceImpl implements LiberianService {
         BeanUtils.copyProperties(liberianModel,liberian);
         liberian.setEnabled(false);
         liberian.setImageUrl("");
+        liberian.setPassword(passwordEncoder.encode(liberian.getPassword()));
 
         return liberianRepository.save(liberian);
     }

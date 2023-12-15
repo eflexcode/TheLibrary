@@ -14,9 +14,13 @@ import com.larrex.thelibrary.liberian.entity.Liberian;
 import com.larrex.thelibrary.liberian.entity.model.LiberianModel;
 import com.larrex.thelibrary.liberian.service.LiberianService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.net.http.HttpHeaders;
 import java.util.Date;
 import java.util.UUID;
 
@@ -28,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
     private final VerificationService verificationService;
     private final CustomUserServiceImpl customUserService;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Liberian createLiberian(LiberianModel liberianModel) {
@@ -78,7 +83,11 @@ public class AuthServiceImpl implements AuthService {
 
         final UserDetails userDetails = customUserService.loadUserByUsername(login.getEmail());
 
-        return new TokenResponse(jwtUtil.generateJWT(userDetails));
+       if (passwordEncoder.matches(login.getPassword(), userDetails.getPassword())){
+           return new TokenResponse(jwtUtil.generateJWT(userDetails));
+       }
+
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 
 }
