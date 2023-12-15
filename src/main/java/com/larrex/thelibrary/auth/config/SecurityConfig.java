@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(openUrls).permitAll().anyRequest().authenticated());
+                .authorizeHttpRequests(auth -> auth.requestMatchers(openUrls).permitAll().anyRequest().permitAll());
 
         return httpSecurity.build();
     }

@@ -27,7 +27,7 @@ public class LiberianServiceImpl implements LiberianService {
 
 
         if (isUserNew(liberianModel.getEmail())){
-           throw  new ResponseStatusException(HttpStatus.IM_USED, "email already exist");
+           throw  new ResponseStatusException(HttpStatus.FORBIDDEN, "email already exist");
         }
 
         Liberian liberian = new Liberian();
