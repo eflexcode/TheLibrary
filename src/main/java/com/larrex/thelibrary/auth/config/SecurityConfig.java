@@ -2,13 +2,16 @@ package com.larrex.thelibrary.auth.config;
 
 import com.larrex.thelibrary.auth.filter.JwtFilter;
 import com.larrex.thelibrary.auth.serviceImpl.CustomUserServiceImpl;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,22 +22,19 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
-@Component
 @EnableWebSecurity
-@RequiredArgsConstructor
 @Configuration
+@EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    String[] openUrls = {"/auth/v1/register","/auth/v1/verify_token","/auth/v1/expired_Token","/auth/v1/login"};
+    String openUrls[] = {"/auth/v1/register","/auth/v1/verify_token","/auth/v1/expired_Token","/auth/v1/login"};
 //    String[] openUrls = {"/auth/v1/**"};
 
     private final CustomUserServiceImpl userService;
-    private final JwtFilter filter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+    private  final JwtFilter filter;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public AuthenticationManager authManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -45,7 +45,7 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
